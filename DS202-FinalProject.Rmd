@@ -17,6 +17,14 @@ Corbin Graham, Coleman Dimmer
 
 ???
 
+### Libraries
+
+```{r}
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+```
+
 ## Dataset
 
 Milan
@@ -24,7 +32,6 @@ Milan
 ### Importing Data
 
 ```{r}
-library(tidyverse)
 data <- read_csv("milan.csv")
 head(data)
 ```
@@ -83,9 +90,6 @@ milanClimate$COOLEST_DAY <- as.numeric(substr(gsub('\\D','',milanClimate$COOLEST
 
 ```{r}
 
-library(dplyr)
-library(ggplot2)
-
 subset_min <- data %>%
   filter(TAVG == min(TAVG, na.rm = TRUE)) %>%
   select(DATE, TAVG, TMIN, TMAX)
@@ -109,7 +113,6 @@ ggplot(subset_min_max, aes(x=DATE, y=TAVG)) +
 
 ```{r}
 # Monthly averages
-
 
 ggplot(data, aes(x=DATE, y=TAVG)) +
   geom_point(color='blue') +

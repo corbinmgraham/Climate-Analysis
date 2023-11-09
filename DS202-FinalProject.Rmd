@@ -9,24 +9,33 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+## Dataset
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+Milan
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+### Importing Data
 
 ```{r}
 library(tidyverse)
-data <- read_csv("VIW_FNT.csv")
+data <- read_csv("milan.csv")
 head(data)
 ```
+### Data Timeframe
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r}
+min(data$DATE)
+max(data$DATE)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+### Description
+
+The dataset we chose is monthly climate data recorded in Milan, Italy, between January 1763 and November 2008. We can use this data to analyze climate patterns. etc.
+
+## Cleaning the Data
+
+```{r}
+
+```
+
+## Marginal Summaries
+

@@ -41,7 +41,7 @@ The dataset we chose is monthly climate data recorded in Milan, Italy, between J
 #Grabs data and names columns to more reasonable col names. NOTE: DX and DY values are in degrees F, so changed to more accurate degrees C titles to match all other vars. 
 milanClimate <- data %>%
   select(
-    DATE = ym(DATE),
+    DATE,
     MEAN = TAVG,
     MEAN_MAX = TMAX,
     MEAN_MIN = TMIN,
@@ -57,6 +57,8 @@ milanClimate <- data %>%
     LTE_00 = DT32,
     LTE_N18 = DT00
   )
+
+milanClimate$DATE <- lubridate::ym(milanClimate$DATE)
 
 milanClimate$HIGHEST_DAY <- as.numeric(substr(gsub('\\D','',milanClimate$HIGHEST_DAY), nchar(gsub('\\D','',milanClimate$HIGHEST_DAY))-1, nchar(gsub('\\D','',milanClimate$HIGHEST_DAY))))
 

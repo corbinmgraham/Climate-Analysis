@@ -9,6 +9,14 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# DS 201 Final Project
+
+Corbin Graham, Coleman Dimmer
+
+## Description
+
+???
+
 ## Dataset
 
 Milan
@@ -20,6 +28,7 @@ library(tidyverse)
 data <- read_csv("milan.csv")
 head(data)
 ```
+
 ### Data Timeframe
 
 ```{r}
@@ -27,15 +36,76 @@ min(data$DATE)
 max(data$DATE)
 ```
 
-### Description
+### Data Description
 
 The dataset we chose is monthly climate data recorded in Milan, Italy, between January 1763 and November 2008. We can use this data to analyze climate patterns. etc.
 
 ## Cleaning the Data
 
+Drop null values, drop precipitation data
+
 ```{r}
+
+drop_na(data)
 
 ```
 
 ## Marginal Summaries
 
+### Max Temperature and Minimum Temperature with Date
+
+```{r}
+
+library(dplyr)
+library(ggplot2)
+
+subset_min <- data %>%
+  filter(TAVG == min(TAVG, na.rm = TRUE)) %>%
+  select(DATE, TAVG, TMIN, TMAX)
+subset_min
+
+subset_max <- data %>%
+  filter(TAVG == max(TAVG, na.rm = TRUE)) %>%
+  select(DATE, TAVG, TMIN, TMAX)
+subset_max
+
+subset_min_max <- bind_rows(subset_min, subset_max)
+subset_min_max
+
+ggplot(subset_min_max, aes(x=DATE, y=TAVG)) +
+  geom_bar(stat="identity", fill="blue", width=0.5) +
+  geom_errorbar(aes(ymin = TMIN, ymax = TMAX), width = 0.2, position = position_dodge(width = 0.5)) +
+  labs(x="Date", y="Temperature (C)") +
+  ggtitle("Minimum and Maximum Temperatures by Date")
+
+```
+
+```{r}
+# Monthly averages
+
+
+ggplot(data, aes(x=DATE, y=TAVG)) +
+  geom_point(color='blue') +
+  geom_smooth(method='lm') +
+  labs(x="Date", y="Temperature (C)") +
+  ggtitle("Average Temperature by Date")
+```
+```{r}
+# Assuming data is your dataframe
+
+# Extract year from the "date" column
+new_data <- data %>%
+  mutate(year = lubridate::year(DATE))
+
+# Create a summary dataframe with yearly statistics
+summary_df <- new_data %>%
+  group_by(year) %>%
+  summarise(
+    Avg_TAVG = mean(TAVG, na.rm = TRUE),
+    Min_TMIN = min(TMIN, na.rm = TRUE),
+    Max_TMAX = max(TMAX, na.rm = TRUE)
+  )
+
+# Print the summary dataframe
+print(summary_df)
+```

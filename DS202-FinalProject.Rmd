@@ -41,7 +41,7 @@ The dataset we chose is monthly climate data recorded in Milan, Italy, between J
 #Grabs data and names columns to more reasonable col names. NOTE: DX and DY values are in degrees F, so changed to more accurate degrees C titles to match all other vars. 
 milanClimate <- data %>%
   select(
-    DATE,
+    DATE = ym(DATE),
     MEAN = TAVG,
     MEAN_MAX = TMAX,
     MEAN_MIN = TMIN,

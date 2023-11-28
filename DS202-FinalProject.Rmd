@@ -152,3 +152,7 @@ ggplot(summary_df, aes(x=year, y=MEAN)) +
   labs(x="Date", y="Temperature (C)") +
   ggtitle("Annual Temperature Range with Trend")
 ```
+
+## 2 Plans for Data Exploration
+
+With the data, we plan to explore the shift of temperatures in the Milan area. Combining this with economic data from the area can share how the shift in temperature has aftected the economy. Or combining it with populaiton data, we can compare it with population shifts. Across the data, we should be able to find comparisons between the temperature and other local events.

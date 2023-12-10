@@ -89,6 +89,7 @@ milanClimate$HIGHEST_DAY <- as.numeric(substr(gsub('\\D','',milanClimate$HIGHEST
 
 milanClimate$COOLEST_DAY <- as.numeric(substr(gsub('\\D','',milanClimate$COOLEST_DAY), nchar(gsub('\\D','',milanClimate$COOLEST_DAY))-1, nchar(gsub('\\D','',milanClimate$COOLEST_DAY))))
 
+colnames(milanClimate)
 ```
 
 ## Marginal Summaries

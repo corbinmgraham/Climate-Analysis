@@ -162,7 +162,7 @@ print("Number of NA values per column:")
 colSums(is.na(data))
 ```
 
-As seen, DP values have quite a few more NA values than DT/DX values. Since are several null-value rows, we will drow rows hat contain null values. Also, when checking precipitation data, we see that it is missing all dates before 1858, negating the first nearly 100 years. This will be removed since the values will be biased towards later dates.
+As seen, DP values have quite a few more NA values than DT/DX values. Since are several null-value rows, we will drow rows hat contain null values. Also, when checking precipitation data, we see that it is missing all dates before 1858, negating the first nearly 100 years. This will be removed since the values will be biased towards later dates. Location data is also not important since all of the measurements were recorded from the same weather station.
 
 #### Creating a Clean Object
 

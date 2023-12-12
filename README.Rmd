@@ -162,7 +162,7 @@ print("Number of NA values per column:")
 colSums(is.na(data))
 ```
 
-As seen, DP values have quite a few more NA values than DT/DX values. Since are several null-value rows, we will drow rows hat contain null values. Also, when checking precipitation data, we see that it is missing all dates before 1950. This will be removed since the values will be biased towards later dates.
+As seen, DP values have quite a few more NA values than DT/DX values. Since are several null-value rows, we will drow rows hat contain null values. Also, when checking precipitation data, we see that it is missing all dates before 1858, negating the first nearly 100 years. This will be removed since the values will be biased towards later dates.
 
 #### Creating a Clean Object
 
@@ -209,39 +209,83 @@ We have removed all of the null-value rows, and cleaned up the column names for 
 
 Now that we have a cleaned data object, we can begin to plot charts to find and demonstrate different trends.
 
-### Max Temperature and Minimum Temperature with Date
+### Data Time Frame
 
 ```{r}
-
+# First Date
 subset_min <- milanClimate %>%
   filter(MEAN == min(MEAN, na.rm = TRUE)) %>%
   select(DATE, MEAN, MEAN_MIN, MEAN_MAX)
-subset_min
+# subset_min
 
+# Final Date
 subset_max <- milanClimate %>%
   filter(MEAN == max(MEAN, na.rm = TRUE)) %>%
   select(DATE, MEAN, MEAN_MIN, MEAN_MAX)
-subset_max
+# subset_max
 
 subset_min_max <- bind_rows(subset_min, subset_max)
 subset_min_max # Highest and Lowest Temperatures
+```
 
+Above, you can see the time frame this data exists within.
+
+### Monthly Temperature Range
+
+```{r}
 ggplot(milanClimate, aes(x=DATE, y=MEAN)) +
   geom_bar(stat="identity", fill="blue", width=0.5) +
   geom_errorbar(aes(ymin = MEAN_MIN, ymax = MEAN_MAX), width = 0.2, position = position_dodge(width = 0.5)) +
-  labs(x="Date", y="Temperature (C)") +
-  ggtitle("Temperature Ranges by Date")
-
+  labs(x="Year", y="Temperature (C)") +
+  ggtitle("Annual Temperature Ranges")
 ```
+
+From this temperature range graph, you can see some trends, especially into the 2000s.
+
+```{r}
+
+# Create a subset
+ex <- milanClimate
+ex$DATE <- factor(ex$DATE)
+
+# Extract month and year
+ex$Month = month(ex$DATE)
+ex$Year = year(ex$DATE)
+ex$Year = as.numeric(ex$Year)
+
+# Plot the data
+ggplot(ex, aes(x = Month, y = MEAN, color = factor(Year))) +
+  geom_point() +
+  geom_line() +
+  scale_x_continuous(breaks = 1:12, labels = month.abb) +  # Set breaks and labels for the x-axis
+  labs(x = "Month", y = "MEAN", title = "Mean values over months") +
+  theme(legend.position = "none")  # Hide the legend
+```
+
+This graph displays the same data as above, but highlights the temperature trend over the year.
+
+### Annual Temperature Trend
 
 ```{r}
 # Monthly averages
 ggplot(milanClimate, aes(x=DATE, y=MEAN)) +
   geom_point(color='blue') +
   geom_smooth(method='lm', color='red') +
-  labs(x="Date", y="Temperature (C)") +
+  labs(x="Year", y="Temperature (C)") +
   ggtitle("Average Temperature by Date with Trend")
 ```
+
+The above graph shows a clear upwards trend in average temperature over the time frame of the data. Let's figure out what the exact difference is.
+
+### Increase in Average Temperature
+
+```{r}
+# TODO: Coleman, calculate the average of the last and first year, subtract for average increase
+```
+
+The above highlights an increase of XXX degrees (C).
+
+### Average Annual Temperature Trend
 
 ```{r}
 # Extract year from the "date" column
@@ -256,65 +300,83 @@ summary_df <- new_data %>%
     MIN = min(MEAN_MIN, na.rm = TRUE),
     MAX = max(MEAN_MAX, na.rm = TRUE)
   )
-summary_df
 
 # Print the summary dataframe
 ggplot(summary_df, aes(x=year, y=MEAN)) +
   geom_bar(stat="identity", fill="blue", width=0.5) +
   geom_smooth(method='lm', color='red') +
-  labs(x="Date", y="Temperature (C)") +
-  ggtitle("Annual Temperature Range with Trend")
+  labs(x="Year", y="Temperature (C)") +
+  ggtitle("Annual Temperature Average with Trend")
 ```
+
+### Other Elements
 
 ```{r}
 
 ggplot(milanClimate, aes(x=DATE, y=MEAN_MAX)) +
   geom_point(color='blue') +
   geom_smooth(method='lm', color='red') +
-  labs(x="Date", y="Temperature (C)") +
+  labs(x="Year", y="Temperature (C)") +
   ggtitle("Average Maximum Temperature Annualy")
 
 ggplot(milanClimate, aes(x=DATE, y=MEAN_MIN)) +
   geom_point(color='blue') +
   geom_smooth(method='lm', color='red') +
-  labs(x="Date", y="Temperature (C)") +
+  labs(x="Year", y="Temperature (C)") +
   ggtitle("Average Minimum Temperature Annualy")
 
 ggplot(milanClimate, aes(x=DATE, y=HEAT_DEG_DAYS)) +
   geom_point(color='blue') +
   geom_smooth(method='lm', color='red') +
-  labs(x="Date", y="Number of Days") +
+  labs(x="Year", y="Number of Days") +
   ggtitle("Heating Days")
 
 ggplot(milanClimate, aes(x=DATE, y=COOL_DEG_DAYS)) +
   geom_point(color='blue') +
   geom_smooth(method='lm', color='red') +
-  labs(x="Date", y="Number of Days") +
+  labs(x="Year", y="Number of Days") +
   ggtitle("Cooling Days")
 
 ggplot(milanClimate, aes(x=DATE, y=GTE_32)) +
   geom_point(color='blue') +
   geom_smooth(method='lm', color='red') +
-  labs(x="Date", y="Number of Days") +
-  ggtitle("Temperatures about 32C")
+  labs(x="Year", y="Number of Days") +
+  ggtitle("Temperatures above 32C")
 
 ```
 
-## 2 Plans for Data Exploration
+The average maximum temperature sees a clear annual increase, this is very similar to the increase we saw in the previous graph, and explains the increase of average temperatures. The minimum temperatures saw a slight increase but it is so small, it is untelling. The number of heating days went down, and the number of cooling days went up. This means that there average temperatures are increasing, so, seemingly normal temperatures appear to be much cooler. The number of days with temperatures above 32 degrees (C) saw a massive leap beginning around 1850, falling off around 1913, and then re-rising shortly after 1950. This is something important to explore further.
 
-With the data, we plan to explore the shift of temperatures in the Milan area. Combining this with economic data from the area can share how the shift in temperature has aftected the economy. Or combining it with populaiton data, we can compare it with population shifts. Across the data, we should be able to find comparisons between the temperature and other local events.
+## Investigation
+
+Now that we can see clear trends in the temperature increase, we want to explore some potential factors that influence this shift.
+
+### Industrialization of Italy
+
+The industrial revolution began in Milan, Italy, around 1850 with cotton processing. Industrialization peaked between 1897-1913. Looking back on the previous graph, of temperatures greater than 32 degrees (C), we can see a dramatic increase of these extreme temperatures beginning around 1841, and tapering off in 1913. What followed was World War I, and Milan began a steady decrease in industry, and population due to multiple wars. Following the end of World War II, around the 1950s, until 1973, per capita GDP rose by an average of more than 5% annually, reaching a peak of 7.72% in 1961. This time frame correlates directly to the second increase of temperatures above 32 degrees (C). (3,4)
+
+### Milan's Population
+
+Along with the economic success of Milan, and the rest of Italy, and the return of displaced peoples following WWII, Milan's population grew rapidly, nearly doubling between 1950 and 1972. With year-over-year population increases of about 5% during this time period, we can also derive a correlation between population growth and these temperatures. (5)
+
+### Other Factors
+
+While industrialization, and population growth appear to play a significant role in the increase of average temperatures in Milan, there are certainly other factors. Going forward, to better understand such factors, it would be ideal to create statistical models that correlate directly between such trends. Searching local and global news from these time periods led us to these conclusions, but there are always unexpected factors that can lead to the same conclusions.
 
 ## Conclusion
 
-The United Nations\' concerns appear to have some legitimacy behind them. From our analysis, there were clear trends showing a rise in average temperature in Milan. Increases in average temperature, paired with new extreme highs, as we saw in the graph showing every time the temperature rose above 32 degrees (C), clearly demonstrate a heating climate. Without context, this could be seen as a naturally occurring phenomena until compared with outside sources.
+The United Nations' concerns appear to have some legitimacy behind them. From our analysis, there were clear trends showing a rise in average temperature in Milan. Increases in average temperature, paired with new extreme highs, as we saw in the graph showing every time the temperature rose above 32 degrees (C), clearly demonstrate a heating climate. Without context, this could be seen as a naturally occurring phenomena until compared with outside sources.
 
 When comparing economic trends, the rise of industrialization, subsequent declination, and return, it is apparent, there is no phenomena occurring. Instead, we see a direct correlation between the population, GDB, economic success, and a rise in temperatures.
 
-The United Nations defines climate change as \"Climate change refers to long-term shifts in temperatures and weather patterns. Such shifts can be natural, due to changes in the sun\'s activity or large volcanic eruptions. But since the 1800s, human activities have been the main driver of climate change, primarily due to the burning of fossil fuels like coal, oil and gas.\" And, as you see year-over-year increases in temperatures, it is indication of some level of climate change.
+The United Nations defines climate change as "Climate change refers to long-term shifts in temperatures and weather patterns. Such shifts can be natural, due to changes in the sun's activity or large volcanic eruptions. But since the 1800s, human activities have been the main driver of climate change, primarily due to the burning of fossil fuels like coal, oil and gas." And, as you see year-over-year increases in temperatures, it is indication of some level of climate change.
 
 Going forward, if more were to come of this study, broadening our data would be the first step. To truly find and understand all climate-related trends, we need to assess weather, temperature, local, and global events, carbon emission, green-house gases, and much more. Refining and cleaning data is an important step for finding clear, understandable patterns. How can we look to Milan as an example, and understand how similar trends affect the rest of the world? Can we use former trends to predict future events, or how to mitigate the effects of climate change?
 
 ## References
 
 1.  United Nations, <https://www.un.org/sustainabledevelopment/>
-2.  Milan Weather Recording Station, NCEI, https://www.ncei.noaa.gov/access/search/data-search/global-summary-of-the-month?startDate=1800-01-03T00:00:00&endDate=1800-01-03T23:59:59
+2.  Milan Weather Recording Station, NCEI, <https://www.ncei.noaa.gov/access/search/data-search/global-summary-of-the-month?startDate=1800-01-03T00:00:00&endDate=1800-01-03T23:59:59>
+3.  Industrial Revolution of Milan, Italy <https://www.erih.net/how-it-started/industrial-history-of-european-countries/italy#>:\~:text=The%20Industrial%20Revolution%20swept%20the,plant%20near%20Naples%20in%201908
+4.  Economic Growth of Italy <https://ideas.repec.org/p/pra/mprapa/12817.html>
+5.  Milan Population 2023 <https://worldpopulationreview.com/world-cities/milan-population>

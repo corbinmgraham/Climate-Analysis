@@ -19,11 +19,11 @@ The goal of this project is to demonstrate skills learned, in R, analysis of dat
 
 ## Introduction
 
-The United Nations is an intergovernmental organization whose stated purposes are to maintain international peace and security. They describe themselves as, \"the one place on Earth where all the world\'s nations can gather together, discuss common problems, and find shared solutions that benefit all of humanity.\"
+The United Nations is an intergovernmental organization whose stated purposes are to maintain international peace and security. They describe themselves as, "the one place on Earth where all the world's nations can gather together, discuss common problems, and find shared solutions that benefit all of humanity."
 
-The United Nations, as part of its mission for international peace, has compiled 17 goals, which it deems the most important and of the highest priority for all nations. The goals are ordered by importance to the organization\'s purpose. However, all goals should be considered of highest importance for every nation.
+The United Nations, as part of its mission for international peace, has compiled 17 goals, which it deems the most important and of the highest priority for all nations. The goals are ordered by importance to the organization's purpose. However, all goals should be considered of highest importance for every nation.
 
-The United Nations\' thirteenth goal is on climate action. They state that: \"Every person, in every country in every continent will be impacted in some shape or form by climate change. There is a climate cataclysm looming, and we are underprepared for what this could mean.\" Thus, this can be seen as a topic of very high importance since, according to the United Nations, climate change will affect us all.
+The United Nations' thirteenth goal is on climate action. They state that: "Every person, in every country in every continent will be impacted in some shape or form by climate change. There is a climate cataclysm looming, and we are underprepared for what this could mean." Thus, this can be seen as a topic of very high importance since, according to the United Nations, climate change will affect us all.
 
 Finding accurate climate data over an extended period can be difficult since most countries did not begin practicing accurate data recording of weather patterns, emissions, until sometime within the last 200 years. For demonstrating, and finding accurate trends, it is important to look at accurate, comprehensive data collection. The most reliable source for climate data available in the United States is the United States National Centers for Environmental Information (NCEI). All the data they provide is extensive, and heavily scrutinized. The rigor of data quality provides us with the best, and most accurate measurements of the climate. Because most quality data recording began recently, we must look outside our borders to find older data with the same accuracy. The longest-running data record on climate comes from Milan, Italy, which began recording weather and climate data in 1763 for the Italian government.
 
@@ -31,9 +31,9 @@ Using this data, it is our goal to demonstrate climate patterns, and find trends
 
 ## Data Background
 
-The dataset we chose is monthly climate data recorded in Milan, Italy, between January 1763 and November 2008. We can use this data to analyze climate patterns. etc.
+The data set we chose is monthly climate data recorded in Milan, Italy, between January 1763 and November 2008. We can use this data to analyze climate patterns, and possibly use these patterns to correlate with historical/current events that may explain the changes to climate patterns. Do keep in mind, this is one of one thousand data sets meaning this is only a fraction of the total data resource for researchers, scientists, and those seeking to understand and analyze climate patterns and changes.
 
-The original dataset has different information regarding both temperature and precipitation data, with further on more information about specific weather observations in the month.
+The original data set has different information regarding both temperature and precipitation data, with further on more information about specific weather observations in the months. Since this based on a month-by-month set throughout the years, we can see patterns, even in older years, as long as only a few data points are missing.
 
 **Degree Days**
 
@@ -43,17 +43,107 @@ The original dataset has different information regarding both temperature and pr
 
 -   Degree Heating Days: days of the month with a temperature above that month's mean
 
-**Temperature**
+**Columns:**
 
--   Min/Max/Mean temperatures, with days the mins/maxes appeared on
+-   Station - Station ID where data was collected from.
 
--   Heating/Cooling Degree Days The amount of days above/below certain temperature levels
+-   Date - Year and month data was collected.
 
-**Precipitation**
+-   Latitude - Latitude location of the station where information was collected.
 
--   Total amount observed
+-   Longitude - Longitude location of the station where information was collected.
 
--   Greatest amount observed with date Snow/Sleet total fall, max depth, max date Whether there was heavy fog/thunderstorms
+-   Elevation - Elevation (Distance above sea level) of weather station.
+
+-   Name - Name of the location where the station is held. Generally a city and country pair.
+
+-   CDSD -
+
+-   CDSD_Attributes -
+
+-   CLDD -
+
+-   CLDD_Attributes -
+
+-   DP01 -
+
+-   DP01_Attributes -
+
+-   DP10 -
+
+-   DP10_Attributes -
+
+-   DP1X -
+
+-   DP1X_Attributes -
+
+-   DT00 -
+
+-   DT00_Attributes -
+
+-   DT32 -
+
+-   DT32_Attributes -
+
+-   DX32 -
+
+-   DX32_Attributes -
+
+-   DX70 -
+
+-   DX_Attributes -
+
+-   DX90 -
+
+-   DX90_Attributes -
+
+-   DYNT -
+
+-   DYNT_Attributes -
+
+-   DYXP -
+
+-   DYXP_Attributes -
+
+-   DYXT -
+
+-   DYXT_Attributes -
+
+-   EMNT -
+
+-   EMNT_Attributes -
+
+-   EMXP -
+
+-   EMXP_Attributes -
+
+-   EMXT -
+
+-   EMXT_Attributes -
+
+-   HDSD -
+
+-   HDSD_Attributes -
+
+-   HTDD -
+
+-   HTDD_Attributes -
+
+-   PRCP -
+
+-   PRCP_Attributes -
+
+-   TAVG -
+
+-   TAVG_Attributes -
+
+-   TMAX -
+
+-   TMAX_Attributes -
+
+-   TMIN -
+
+-   TMIN_Attributes -
 
 #### Dataset
 
@@ -172,12 +262,16 @@ milanClimate <- data %>%
     LTE_N18 = DT00
   )
 
+# Change the date column into a more usable format.
 milanClimate$DATE <- lubridate::ym(milanClimate$DATE)
 
+# Clean and remove unnessicary character in this attribute.
 milanClimate$HIGHEST_DAY <- as.numeric(substr(gsub('\\D','',milanClimate$HIGHEST_DAY), nchar(gsub('\\D','',milanClimate$HIGHEST_DAY))-1, nchar(gsub('\\D','',milanClimate$HIGHEST_DAY))))
 
+# Clean and remove unnessicary character in this attribute.
 milanClimate$COOLEST_DAY <- as.numeric(substr(gsub('\\D','',milanClimate$COOLEST_DAY), nchar(gsub('\\D','',milanClimate$COOLEST_DAY))-1, nchar(gsub('\\D','',milanClimate$COOLEST_DAY))))
 
+# Show cleaned data columns.
 colnames(milanClimate)
 ```
 

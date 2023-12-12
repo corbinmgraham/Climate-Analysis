@@ -31,6 +31,27 @@ We chose this location due to the timeframe and data provided. We will be using 
 
 The dataset we chose is monthly climate data recorded in Milan, Italy, between January 1763 and November 2008. We can use this data to analyze climate patterns. etc.
 
+The original data set has different information regarding both temperature and precipitation data, with further on more information about specific weather observations in the month.
+
+Before going more in depth into what the data describes, let's talk some terminology:
+  Degree days - the difference between the daily temperature mean and monthly temperature mean
+    Cooling: More days below monthly average
+    Heating: More days above monthly average
+
+
+For temperature-based measurements, we have:
+  Min/Max/Mean temperatures, with days the mins/maxes appeared on
+  Heating/Cooling Degree Days
+  The amount of days above/below certain temperature levels
+  
+For precipitation-based and weather-based data, we have:
+  Total amount
+  greatest amount observed with date
+  Snow/Sleet total fall, max depth, max date
+  Whether there was heavy fog/thunderstorms
+  
+  
+
 \^Clearly and concisely describes the data and all relevant variables
 
 #### Dataset
@@ -111,12 +132,17 @@ Now that we have successfully imported the data, we will clean up our data objec
 To 'weed out' invaluable variables, we will search for variables that lack the proper time frame, are null, or incomplete.
 
 ```{r}
-
-# Determine if the location value changes
-# TODO: Coleman
+# Determining if the location value changes
+print("Latitude:")
+unique(data$LATITUDE)
+print("Longitude:")
+unique(data$LONGITUDE)
 
 # Determine if all variables have the same time frame
-# TODO: Coleman
+print("Number of NA values per column:")
+colSums(is.na(data))
+
+# As seen, DP values have quite a few more NA values than DT/DX values.
 ```
 
 #### Creating a Clean Object

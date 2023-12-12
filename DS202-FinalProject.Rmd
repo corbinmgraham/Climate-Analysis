@@ -1,7 +1,7 @@
 ---
 title: "DS202-FinalProject"
 author: "Corbin Graham, Coleman Dimmer"
-date: "2023-11-09"
+date: "2023-12-12"
 output: html_document
 ---
 
@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # DS 201 Final Project
 
-Corbin Graham, Coleman Dimmer
+**Authors: Corbin Graham, Coleman Dimmer**
 
 ## Description
 
@@ -19,7 +19,29 @@ The goal of this project is to demonstrate climate trends related to temperature
 
 We chose this location due to the timeframe and data provided. We will be using monthly weather (temperature) data from January 1763 to November 2008.
 
-### Libraries
+## Introduction
+
+\-- Introduction Here --
+
+\^Clearly and concisely describes the topic, and why it is of interest. Sets up a clear roadmap for the rest of the paper.
+
+### Data Background
+
+\-- Information about the data --
+
+The dataset we chose is monthly climate data recorded in Milan, Italy, between January 1763 and November 2008. We can use this data to analyze climate patterns. etc.
+
+\^Clearly and concisely describes the data and all relevant variables
+
+#### Dataset
+
+[Milan Weather Recording Station from NCEI (https://www.ncei.noaa.gov/access/search/data-search/global-summary-of-the-month?startDate=1800-01-03T00:00:00&endDate=1800-01-03T23:59:59)](https://www.ncei.noaa.gov/access/search/data-search/global-summary-of-the-month?startDate=1800-01-03T00:00:00&endDate=1800-01-03T23:59:59)
+
+## Importing Data
+
+Now that we have determined the dataset we wish to use, it is as simple as downloading it from the official source found to the CSV format. This allows us to easily import it as a malleable object.
+
+#### Importanting Libraries
 
 ```{r}
 library(tidyverse)
@@ -27,39 +49,54 @@ library(dplyr)
 library(ggplot2)
 ```
 
-## Dataset
+The libraries we are using are for inline operations, and plotting.
 
-[Milan Weather Recording Station from NCEI](https://www.ncei.noaa.gov/access/search/data-search/global-summary-of-the-month?startDate=1800-01-03T00:00:00&endDate=1800-01-03T23:59:59)
-
-### Importing Data
+#### Important Data from CSV
 
 ```{r}
 data <- read_csv("milan.csv")
 head(data)
 ```
 
-### Data Timeframe
+Since we have already downloaded our data to a CSV file, we only need to import it from that file.
+
+#### Data Time Frame
 
 ```{r}
 min(data$DATE)
 max(data$DATE)
 ```
 
-### Data Columns
+This function returns the first, and last date in the dataset. The first date is January, 1763, and the final date is November, 2008.
+
+#### Data Columns
+
+```{r}
+colnames(data)
+```
+
+This function prints out all of the column names in the original dataset.
+
+## Data Cleaning
+
+Now that we have successfully imported the data, we will clean up our data object so our results are more accurate, and understandable.
+
+#### Finding Important Variables
+
+To 'weed out' invaluable variables, we will search for variables that lack the proper time frame, are null, or incomplete.
 
 ```{r}
 
-colnames(data)
+# Determine if the location value changes
+# TODO: Coleman
 
+# Determine if all variables have the same time frame
+# TODO: Coleman
 ```
 
-### Data Description
+#### Creating a Clean Object
 
-The dataset we chose is monthly climate data recorded in Milan, Italy, between January 1763 and November 2008. We can use this data to analyze climate patterns. etc.
-
-## Cleaning the Data
-
-Drop null values, drop precipitation data (due to lack of data within timeframe)
+Drop null values, drop precipitation data (due to lack of data within timeframe), and remove location data since all of the recordings happened from the same location.
 
 ```{r}
 
@@ -94,6 +131,8 @@ colnames(milanClimate)
 
 ## Marginal Summaries
 
+Now that we have a cleaned data object, we can begin to plot charts to find and demonstrate different trends.
+
 ### Max Temperature and Minimum Temperature with Date
 
 ```{r}
@@ -121,7 +160,6 @@ ggplot(milanClimate, aes(x=DATE, y=MEAN)) +
 
 ```{r}
 # Monthly averages
-
 ggplot(milanClimate, aes(x=DATE, y=MEAN)) +
   geom_point(color='blue') +
   geom_smooth(method='lm', color='red') +
@@ -130,8 +168,6 @@ ggplot(milanClimate, aes(x=DATE, y=MEAN)) +
 ```
 
 ```{r}
-# Assuming data is your dataframe
-
 # Extract year from the "date" column
 new_data <- milanClimate %>%
   mutate(year = lubridate::year(DATE))
@@ -152,6 +188,40 @@ ggplot(summary_df, aes(x=year, y=MEAN)) +
   geom_smooth(method='lm', color='red') +
   labs(x="Date", y="Temperature (C)") +
   ggtitle("Annual Temperature Range with Trend")
+```
+
+```{r}
+
+ggplot(milanClimate, aes(x=DATE, y=MEAN_MAX)) +
+  geom_point(color='blue') +
+  geom_smooth(method='lm', color='red') +
+  labs(x="Date", y="Temperature (C)") +
+  ggtitle("Average Maximum Temperature Annualy")
+
+ggplot(milanClimate, aes(x=DATE, y=MEAN_MIN)) +
+  geom_point(color='blue') +
+  geom_smooth(method='lm', color='red') +
+  labs(x="Date", y="Temperature (C)") +
+  ggtitle("Average Minimum Temperature Annualy")
+
+ggplot(milanClimate, aes(x=DATE, y=HEAT_DEG_DAYS)) +
+  geom_point(color='blue') +
+  geom_smooth(method='lm', color='red') +
+  labs(x="Date", y="Number of Days") +
+  ggtitle("Heating Days")
+
+ggplot(milanClimate, aes(x=DATE, y=COOL_DEG_DAYS)) +
+  geom_point(color='blue') +
+  geom_smooth(method='lm', color='red') +
+  labs(x="Date", y="Number of Days") +
+  ggtitle("Cooling Days")
+
+ggplot(milanClimate, aes(x=DATE, y=GTE_32)) +
+  geom_point(color='blue') +
+  geom_smooth(method='lm', color='red') +
+  labs(x="Date", y="Number of Days") +
+  ggtitle("Temperatures about 32C")
+
 ```
 
 ## 2 Plans for Data Exploration

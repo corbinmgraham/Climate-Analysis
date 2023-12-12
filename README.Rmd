@@ -9,50 +9,51 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# DS 201 Final Project
+# DS 202 Final Project
+
+**Title: Climate Analysis of Milan, Italy**
 
 **Authors: Corbin Graham, Coleman Dimmer**
 
-## Description
-
-The goal of this project is to demonstrate climate trends related to temperature throughout time. We are using data provided by National Centers for Environmental Information (NCEI) for the Milan weather recording station of Milan, Italy. Using graphs, charts, and statistical analysis, we will be able to visualize and demonstrate climate trends for this location.
-
-We chose this location due to the timeframe and data provided. We will be using monthly weather (temperature) data from January 1763 to November 2008.
+The goal of this project is to demonstrate skills learned, in R, analysis of data, demonstration of data, and drawing conclusions from data. We used data from National Centers for Environmental Information (NCEI) for the Milan Weather Recording Station of Milan, Italy. Using graphs, charts, and analysis, we will visualize and demonstrate patterns and trends within the dataset.
 
 ## Introduction
 
-\-- Introduction Here --
+The United Nations is an intergovernmental organization whose stated purposes are to maintain international peace and security. They describe themselves as, \"the one place on Earth where all the world\'s nations can gather together, discuss common problems, and find shared solutions that benefit all of humanity.\"
 
-\^Clearly and concisely describes the topic, and why it is of interest. Sets up a clear roadmap for the rest of the paper.
+The United Nations, as part of its mission for international peace, has compiled 17 goals, which it deems the most important and of the highest priority for all nations. The goals are ordered by importance to the organization\'s purpose. However, all goals should be considered of highest importance for every nation.
 
-### Data Background
+The United Nations\' thirteenth goal is on climate action. They state that: \"Every person, in every country in every continent will be impacted in some shape or form by climate change. There is a climate cataclysm looming, and we are underprepared for what this could mean.\" Thus, this can be seen as a topic of very high importance since, according to the United Nations, climate change will affect us all.
 
-\-- Information about the data --
+Finding accurate climate data over an extended period can be difficult since most countries did not begin practicing accurate data recording of weather patterns, emissions, until sometime within the last 200 years. For demonstrating, and finding accurate trends, it is important to look at accurate, comprehensive data collection. The most reliable source for climate data available in the United States is the United States National Centers for Environmental Information (NCEI). All the data they provide is extensive, and heavily scrutinized. The rigor of data quality provides us with the best, and most accurate measurements of the climate. Because most quality data recording began recently, we must look outside our borders to find older data with the same accuracy. The longest-running data record on climate comes from Milan, Italy, which began recording weather and climate data in 1763 for the Italian government.
+
+Using this data, it is our goal to demonstrate climate patterns, and find trends in those patterns. Using the trends, we may, or may not find, we hope to find the highest correlating data available to potentially explain the trends we see. While some trends may have no correlation, it is of high likelihood that any trends demonstrated in climate patterns are the result of some external event.
+
+## Data Background
 
 The dataset we chose is monthly climate data recorded in Milan, Italy, between January 1763 and November 2008. We can use this data to analyze climate patterns. etc.
 
-The original data set has different information regarding both temperature and precipitation data, with further on more information about specific weather observations in the month.
+The original dataset has different information regarding both temperature and precipitation data, with further on more information about specific weather observations in the month.
 
-Before going more in depth into what the data describes, let's talk some terminology:
-  Degree days - the difference between the daily temperature mean and monthly temperature mean
-    Cooling: More days below monthly average
-    Heating: More days above monthly average
+**Degree Days**
 
+-   Degree Days: days in a month where the temperature is above or below the mean temperature for that month, measured in points where each point is a degree above or below the mean.
 
-For temperature-based measurements, we have:
-  Min/Max/Mean temperatures, with days the mins/maxes appeared on
-  Heating/Cooling Degree Days
-  The amount of days above/below certain temperature levels
-  
-For precipitation-based and weather-based data, we have:
-  Total amount
-  greatest amount observed with date
-  Snow/Sleet total fall, max depth, max date
-  Whether there was heavy fog/thunderstorms
-  
-  
+-   Degree Cooling Days: days of the month with a temperature below that month's mean
 
-\^Clearly and concisely describes the data and all relevant variables
+-   Degree Heating Days: days of the month with a temperature above that month's mean
+
+**Temperature**
+
+-   Min/Max/Mean temperatures, with days the mins/maxes appeared on
+
+-   Heating/Cooling Degree Days The amount of days above/below certain temperature levels
+
+**Precipitation**
+
+-   Total amount observed
+
+-   Greatest amount observed with date Snow/Sleet total fall, max depth, max date Whether there was heavy fog/thunderstorms
 
 #### Dataset
 
@@ -123,7 +124,7 @@ colnames(data)
 
 This function prints out all of the column names in the original dataset.
 
-## Data Cleaning
+## Cleaning Data
 
 Now that we have successfully imported the data, we will clean up our data object so our results are more accurate, and understandable.
 

@@ -19,11 +19,11 @@ The goal of this project is to demonstrate skills learned, in R, analysis of dat
 
 ## Introduction
 
-The United Nations is an intergovernmental organization whose stated purposes are to maintain international peace and security. They describe themselves as, "the one place on Earth where all the world's nations can gather together, discuss common problems, and find shared solutions that benefit all of humanity."
+The United Nations is an intergovernmental organization whose stated purposes are to maintain international peace and security. They describe themselves as, "the one place on Earth where all the world's nations can gather together, discuss common problems, and find shared solutions that benefit all of humanity."(1)
 
 The United Nations, as part of its mission for international peace, has compiled 17 goals, which it deems the most important and of the highest priority for all nations. The goals are ordered by importance to the organization's purpose. However, all goals should be considered of highest importance for every nation.
 
-The United Nations' thirteenth goal is on climate action. They state that: "Every person, in every country in every continent will be impacted in some shape or form by climate change. There is a climate cataclysm looming, and we are underprepared for what this could mean." Thus, this can be seen as a topic of very high importance since, according to the United Nations, climate change will affect us all.
+The United Nations' thirteenth goal is on climate action. They state that: "Every person, in every country in every continent will be impacted in some shape or form by climate change. There is a climate cataclysm looming, and we are underprepared for what this could mean."(1) Thus, this can be seen as a topic of very high importance since, according to the United Nations, climate change will affect us all.
 
 Finding accurate climate data over an extended period can be difficult since most countries did not begin practicing accurate data recording of weather patterns, emissions, until sometime within the last 200 years. For demonstrating, and finding accurate trends, it is important to look at accurate, comprehensive data collection. The most reliable source for climate data available in the United States is the United States National Centers for Environmental Information (NCEI). All the data they provide is extensive, and heavily scrutinized. The rigor of data quality provides us with the best, and most accurate measurements of the climate. Because most quality data recording began recently, we must look outside our borders to find older data with the same accuracy. The longest-running data record on climate comes from Milan, Italy, which began recording weather and climate data in 1763 for the Italian government.
 
@@ -35,6 +35,12 @@ The data set we chose is monthly climate data recorded in Milan, Italy, between 
 
 The original data set has different information regarding both temperature and precipitation data, with further on more information about specific weather observations in the months. Since this based on a month-by-month set throughout the years, we can see patterns, even in older years, as long as only a few data points are missing.
 
+### Dataset
+
+[Milan Weather Recording Station from NCEI (https://www.ncei.noaa.gov/access/search/data-search/global-summary-of-the-month?startDate=1800-01-03T00:00:00&endDate=1800-01-03T23:59:59)](https://www.ncei.noaa.gov/access/search/data-search/global-summary-of-the-month?startDate=1800-01-03T00:00:00&endDate=1800-01-03T23:59:59)
+
+### Column Background
+
 **Degree Days**
 
 -   Degree Days: days in a month where the temperature is above or below the mean temperature for that month, measured in points where each point is a degree above or below the mean.
@@ -43,113 +49,35 @@ The original data set has different information regarding both temperature and p
 
 -   Degree Heating Days: days of the month with a temperature above that month's mean
 
-**Columns:**
+**Temperature**
 
--   Station - Station ID where data was collected from.
+-   TAVG: Average temperature in a month
 
--   Date - Year and month data was collected.
+-   TMAX: Maximum temperature in a month
 
--   Latitude - Latitude location of the station where information was collected.
+-   TMIN: Minimum temperature in a month
 
--   Longitude - Longitude location of the station where information was collected.
+-   DT32: Temperature above 32 degrees celcius
 
--   Elevation - Elevation (Distance above sea level) of weather station.
+**Location**
 
--   Name - Name of the location where the station is held. Generally a city and country pair.
+-   Station: Unique station ID; where data was collected
 
--   CDSD -
+-   Name: Name of station; where data was collected
 
--   CDSD_Attributes -
+-   Date: Year and month data was collected
 
--   CLDD -
+-   Latitude/Longitude/Elevation: Coordinates for station
 
--   CLDD_Attributes -
+**Precipitation**
 
--   DP01 -
+-   PRCP: Total precipitation for a month
 
--   DP01_Attributes -
+-   EMXP: Highest amount of precipitation in a given year
 
--   DP10 -
+-   EMXP: Lowest amount of precipitation in a given year
 
--   DP10_Attributes -
-
--   DP1X -
-
--   DP1X_Attributes -
-
--   DT00 -
-
--   DT00_Attributes -
-
--   DT32 -
-
--   DT32_Attributes -
-
--   DX32 -
-
--   DX32_Attributes -
-
--   DX70 -
-
--   DX_Attributes -
-
--   DX90 -
-
--   DX90_Attributes -
-
--   DYNT -
-
--   DYNT_Attributes -
-
--   DYXP -
-
--   DYXP_Attributes -
-
--   DYXT -
-
--   DYXT_Attributes -
-
--   EMNT -
-
--   EMNT_Attributes -
-
--   EMXP -
-
--   EMXP_Attributes -
-
--   EMXT -
-
--   EMXT_Attributes -
-
--   HDSD -
-
--   HDSD_Attributes -
-
--   HTDD -
-
--   HTDD_Attributes -
-
--   PRCP -
-
--   PRCP_Attributes -
-
--   TAVG -
-
--   TAVG_Attributes -
-
--   TMAX -
-
--   TMAX_Attributes -
-
--   TMIN -
-
--   TMIN_Attributes -
-
-#### Dataset
-
-[Milan Weather Recording Station from NCEI (https://www.ncei.noaa.gov/access/search/data-search/global-summary-of-the-month?startDate=1800-01-03T00:00:00&endDate=1800-01-03T23:59:59)](https://www.ncei.noaa.gov/access/search/data-search/global-summary-of-the-month?startDate=1800-01-03T00:00:00&endDate=1800-01-03T23:59:59)
-
-#### Data Columns
+### Actual Columns
 
 -   Extreme maximum precipitation
 -   Extreme maximum temperature
@@ -232,9 +160,9 @@ unique(data$LONGITUDE)
 # Determine if all variables have the same time frame
 print("Number of NA values per column:")
 colSums(is.na(data))
-
-# As seen, DP values have quite a few more NA values than DT/DX values.
 ```
+
+As seen, DP values have quite a few more NA values than DT/DX values. Since are several null-value rows, we will drow rows hat contain null values. Also, when checking precipitation data, we see that it is missing all dates before 1950. This will be removed since the values will be biased towards later dates.
 
 #### Creating a Clean Object
 
@@ -274,6 +202,8 @@ milanClimate$COOLEST_DAY <- as.numeric(substr(gsub('\\D','',milanClimate$COOLEST
 # Show cleaned data columns.
 colnames(milanClimate)
 ```
+
+We have removed all of the null-value rows, and cleaned up the column names for easier readability.
 
 ## Marginal Summaries
 
@@ -373,3 +303,18 @@ ggplot(milanClimate, aes(x=DATE, y=GTE_32)) +
 ## 2 Plans for Data Exploration
 
 With the data, we plan to explore the shift of temperatures in the Milan area. Combining this with economic data from the area can share how the shift in temperature has aftected the economy. Or combining it with populaiton data, we can compare it with population shifts. Across the data, we should be able to find comparisons between the temperature and other local events.
+
+## Conclusion
+
+The United Nations\' concerns appear to have some legitimacy behind them. From our analysis, there were clear trends showing a rise in average temperature in Milan. Increases in average temperature, paired with new extreme highs, as we saw in the graph showing every time the temperature rose above 32 degrees (C), clearly demonstrate a heating climate. Without context, this could be seen as a naturally occurring phenomena until compared with outside sources.
+
+When comparing economic trends, the rise of industrialization, subsequent declination, and return, it is apparent, there is no phenomena occurring. Instead, we see a direct correlation between the population, GDB, economic success, and a rise in temperatures.
+
+The United Nations defines climate change as \"Climate change refers to long-term shifts in temperatures and weather patterns. Such shifts can be natural, due to changes in the sun\'s activity or large volcanic eruptions. But since the 1800s, human activities have been the main driver of climate change, primarily due to the burning of fossil fuels like coal, oil and gas.\" And, as you see year-over-year increases in temperatures, it is indication of some level of climate change.
+
+Going forward, if more were to come of this study, broadening our data would be the first step. To truly find and understand all climate-related trends, we need to assess weather, temperature, local, and global events, carbon emission, green-house gases, and much more. Refining and cleaning data is an important step for finding clear, understandable patterns. How can we look to Milan as an example, and understand how similar trends affect the rest of the world? Can we use former trends to predict future events, or how to mitigate the effects of climate change?
+
+## References
+
+1.  United Nations, <https://www.un.org/sustainabledevelopment/>
+2.  Milan Weather Recording Station, NCEI, https://www.ncei.noaa.gov/access/search/data-search/global-summary-of-the-month?startDate=1800-01-03T00:00:00&endDate=1800-01-03T23:59:59

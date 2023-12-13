@@ -291,7 +291,7 @@ firstLastYear <- milanClimate %>%
   summarise(
     averageTemp = mean(MEAN)
   ) %>% filter(
-    year == 1763 | year == 2008
+    year == 1763 | year == 2006
   )
 
 Mean2008 <- firstLastYear[[2,2]]
@@ -301,12 +301,12 @@ avgIncrease <- Mean2008 - Mean1763
 print(avgIncrease)
 ```
 
-The above highlights an increase of XXX degrees (C).
+The above highlights an average increase of 5.54 degrees (C) from the beginning of weather recording to the last recorded year.
 
 ### Average Annual Temperature Trend
 
 ```{r}
-# Extract year from the "date" column
+# Extract year from date column
 new_data <- milanClimate %>%
   mutate(year = lubridate::year(DATE))
 
